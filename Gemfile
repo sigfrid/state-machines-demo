@@ -49,7 +49,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 
 # this gem
-gem 'state_machines-audit_trail', '1.0.2'
+gem 'paper_trail', '4.1.0'
 
 # required runtime dependency for your ORM; either
 #gem 'state_machines', path: '/Users/sig/Code/state_machines'

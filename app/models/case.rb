@@ -2,7 +2,6 @@ class Case < ApplicationRecord
   has_many :transitions, class_name: 'CaseStateTransition'
 
   state_machine :state, initial: :saved do
-    audit_trail context: :dump
 
     event :edit do
       transition [:saved, :edited] => :edited
