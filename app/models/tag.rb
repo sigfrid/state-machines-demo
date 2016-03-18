@@ -1,3 +1,3 @@
 class Tag < ApplicationRecord
-  belongs_to :event
+  has_paper_trail class_name: 'TagVersion'
 end

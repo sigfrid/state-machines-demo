@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160318064532) do
+ActiveRecord::Schema.define(version: 20160318065532) do
 
   create_table "case_state_transitions", force: :cascade do |t|
     t.integer  "case_id"
@@ -62,7 +62,6 @@ ActiveRecord::Schema.define(version: 20160318064532) do
     t.string   "whodunnit"
     t.text     "object",         limit: 1073741823
     t.text     "object_changes", limit: 1073741823
-    t.text     "text",           limit: 1073741823
     t.datetime "created_at"
   end
 
@@ -102,6 +101,18 @@ ActiveRecord::Schema.define(version: 20160318064532) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "tag_versions", force: :cascade do |t|
+    t.string   "item_type",                         null: false
+    t.integer  "item_id",                           null: false
+    t.string   "event",                             null: false
+    t.string   "whodunnit"
+    t.text     "object",         limit: 1073741823
+    t.text     "object_changes", limit: 1073741823
+    t.datetime "created_at"
+  end
+
+  add_index "tag_versions", ["item_type", "item_id"], name: "index_tag_versions_on_item_type_and_item_id"
 
   create_table "tags", force: :cascade do |t|
     t.string   "name"
