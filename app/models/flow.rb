@@ -3,7 +3,7 @@
 # t.integer :size
 
 class Flow
-  attr_accessor :name, :color, :size
+  attr_accessor :name, :color, :size, :state
 
   def self.find(id)
     xattributes = FlowRepository.new(id).last_version.attributes.symbolize_keys.except!(:id)
@@ -12,11 +12,12 @@ class Flow
 
 
 # CREATED_AT IS WRONG
-  def initialize(originator_id: (0...50).map { ('a'..'z').to_a[rand(26)] }.join, name:, color: nil, size:, created_at: nil)
+  def initialize(originator_id: (0...50).map { ('a'..'z').to_a[rand(26)] }.join, name:, color: nil, size:, created_at: nil, state: 'created')
     @originator_id = originator_id
     @name = name
     @color = color
     @size = size
+    @state = state
   end
 
   def id
@@ -39,4 +40,39 @@ class Flow
       attrs[ivar.to_s.gsub(/^@/, '').to_sym] = instance_variable_get(ivar)
     end
   end
+
+
+
+
+
+# STATE MACHINE
+
+def event
+    flow = self
+    FiniteMachine.define do
+      initial :created
+
+      target flow
+
+      events {
+        event :approve, :created => :approved
+        event :implement, :approved => :implemented
+        event :verify, :implemented => :verified
+      #  event :back,  [:neutral, :one] => :reverse
+      }
+
+      callbacks {
+        on_transition do |event|
+          target.state = event.to.to_s
+          #puts "shifted from #{event.from} to #{event.to}"
+        end
+      }
+    end
+  end
+
+
+
+
+
+
 end
