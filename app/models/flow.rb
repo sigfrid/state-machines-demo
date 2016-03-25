@@ -33,10 +33,6 @@ class Flow
     #FlowVersion.store(self)
   end
 
-  def versions
-    FlowRepository.new(@originator_id).versions
-  end
-
 
   def attributes
     instance_variables.each_with_object(Hash.new) do |ivar, attrs|
