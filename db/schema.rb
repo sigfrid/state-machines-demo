@@ -11,7 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160325070532) do
+ActiveRecord::Schema.define(version: 20160325071111) do
+
+  create_table "boxes", force: :cascade do |t|
+    t.integer  "flow_version_id"
+    t.integer  "step_version_id"
+    t.string   "activity"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "boxes", ["flow_version_id", "step_version_id"], name: "index_boxes_on_flow_version_id_and_step_version_id"
+  add_index "boxes", ["flow_version_id"], name: "index_boxes_on_flow_version_id"
+  add_index "boxes", ["step_version_id"], name: "index_boxes_on_step_version_id"
 
   create_table "flow_versions", force: :cascade do |t|
     t.string   "originator_id"

@@ -19,7 +19,7 @@ class StepRepository
     @versions
   end
 
-  def last
+  def last_version
     @versions.last
   end
 end

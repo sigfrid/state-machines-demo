@@ -6,7 +6,7 @@ class Flow
   attr_accessor :name, :color, :size
 
   def self.find(id)
-    xattributes = FlowRepository.new(id).last.attributes.symbolize_keys.except!(:id)
+    xattributes = FlowRepository.new(id).last_version.attributes.symbolize_keys.except!(:id)
     Flow.new(xattributes)
   end
 
