@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160325071111) do
+ActiveRecord::Schema.define(version: 20160325084612) do
 
   create_table "boxes", force: :cascade do |t|
     t.integer  "flow_version_id"
@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 20160325071111) do
     t.string   "color"
     t.integer  "size"
     t.datetime "created_at"
+    t.text     "state"
   end
 
   create_table "step_versions", force: :cascade do |t|
@@ -38,6 +39,7 @@ ActiveRecord::Schema.define(version: 20160325071111) do
     t.string   "name"
     t.integer  "position"
     t.datetime "created_at"
+    t.text     "state"
   end
 
 end

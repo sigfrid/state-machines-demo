@@ -43,6 +43,11 @@ class Flow
 
 
 
+  def update_state(state)
+    state = state
+    save
+  end
+
 
 
 # STATE MACHINE
@@ -50,9 +55,11 @@ class Flow
 def event
     flow = self
     FiniteMachine.define do
-      initial :created
-
       target flow
+      
+  ###    initial :created
+      restore!(target.state.to_sym)
+
 
       events {
         event :approve, :created => :approved
@@ -63,7 +70,7 @@ def event
 
       callbacks {
         on_transition do |event|
-          target.state = event.to.to_s
+          target.update_state(event.to.to_s)
           #puts "shifted from #{event.from} to #{event.to}"
         end
       }
