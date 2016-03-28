@@ -1,6 +1,11 @@
 class StepRepository
   attr_reader :versions
 
+  def self.all
+    current_versions = StepVersion.current
+    current_versions.map {|v| Step.new(v.attributes.symbolize_keys.except!(:id))}
+  end
+
   def initialize(originator_id)
     @versions = StepVersion.all.where(originator_id: originator_id).order(:created_at).to_a
     @version_number = @versions.count

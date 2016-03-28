@@ -1,0 +1,12 @@
+<h1>Steps</h1>
+<hr />
+<%= @steps.count %>
+<hr />
+
+<% @steps.each do |step| %>
+<div>
+  <h3><%= step.name %></h3>
+  <p><%= step.id %></p>
+  <p><%= step.position %></p>
+</div>
+<% end %>

@@ -1,0 +1,9 @@
+<h1>New Step</h1>
+
+<%= form_tag steps_path, method: :post do %>
+
+  <p><%= text_field_tag :name, nil, placeholder: "Name" %></p>
+  <p><%= text_field_tag :position, nil, placeholder: "Position" %></p>
+
+  <%= submit_tag %>
+<% end %>

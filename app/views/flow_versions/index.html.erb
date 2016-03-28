@@ -1,0 +1,16 @@
+<h1>Flow Versions<h1>
+<p>limited to capa (pvxqcyogncfpyaavxrwmajmmxllfauqyuoapyikyvxsrolvems)</p>
+
+
+  <% @flow_versions.each do |version| %>
+  <div>
+    <h3><%= version.name %></h3>
+    <p><%= version.color %></p>
+    <ul>
+      <% version.step_versions.each do |step| %>
+      <li><%= step.name %> <%= step.position %> <%= step.created_at %></li>
+      <% end %>
+    </ul>
+  </div>
+<hr />
+  <% end %>

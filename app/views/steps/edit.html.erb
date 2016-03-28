@@ -1,0 +1,9 @@
+<h1>Edit Step</h1>
+
+<%= form_tag step_path, method: :put do %>
+  <p><%= hidden_field_tag :originator_id, @step.id %></p>
+  <p><%= text_field_tag :name, @step.name, placeholder: "Name" %></p>
+  <p><%= text_field_tag :position, @step.position, placeholder: "Position" %></p>
+
+  <%= submit_tag %>
+<% end %>

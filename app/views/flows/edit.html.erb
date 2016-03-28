@@ -1,0 +1,12 @@
+<h1>Edit Flow</h1>
+
+<%= form_tag flow_path, method: :put do %>
+  <p><%= hidden_field_tag :originator_id, @flow.id %></p>
+  <p><%= text_field_tag :name, @flow.name, placeholder: "Name" %></p>
+  <p><%= text_field_tag :color, @flow.color, placeholder: "Color" %></p>
+  <p><%= text_field_tag :size, @flow.size, placeholder: "size" %></p>
+
+  <p><%= select_tag :step_version_ids, options_from_collection_for_select(@step_versions, :id, :name, @flow.step_versions.map(&:id)), multiple: true %></p>
+
+  <%= submit_tag %>
+<% end %>

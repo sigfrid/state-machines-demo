@@ -1,6 +1,5 @@
 # t.string :name
-# t.string :color
-# t.integer :size
+# t.integer :position
 
 class Step
   attr_accessor :name, :position, :state
@@ -12,11 +11,12 @@ class Step
 
 
 # CREATED_AT IS WRONG
-  def initialize(originator_id: (0...50).map { ('a'..'z').to_a[rand(26)] }.join, name:, position:, created_at: nil, state: 'created')
+  def initialize(originator_id: (0...50).map { ('a'..'z').to_a[rand(26)] }.join, name:, position:, created_at: nil, state: 'created', flow_version_ids: nil)
     @originator_id = originator_id
     @name = name
     @position = position
     @state = state
+    @flow_version_ids = flow_version_ids
   end
 
   def id
@@ -82,7 +82,7 @@ class StepStateMachine < FiniteMachine::Definition
 
   handlers {
     handle FiniteMachine::InvalidStateError do |exception|
-      p "INVALID !!!!"
+      p "INVALID !!!! #{exception}"
     end
   }
 end
