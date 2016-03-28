@@ -5,12 +5,6 @@
 class Flow
   attr_accessor :name, :color, :size, :state
 
-  def self.find(id)
-    xattributes = FlowRepository.new(id).last_version.attributes.symbolize_keys.except!(:id)
-    Flow.new(xattributes)
-  end
-
-
 # CREATED_AT IS WRONG
   def initialize(originator_id: (0...50).map { ('a'..'z').to_a[rand(26)] }.join, name:, color: nil, size:, created_at: nil, state: 'created', step_version_ids: nil)
     @originator_id = originator_id
@@ -27,12 +21,12 @@ class Flow
 
 
   def current_steps
-    current_version = FlowRepository.new(@originator_id).last_version
+    current_version = FlowRepository.new(@originator_id).current_version
     current_version.current_step_versions.map {|v| Step.new(v.attributes.symbolize_keys.except!(:id))}
   end
 
   def step_versions
-    current_version = FlowRepository.new(@originator_id).last_version
+    current_version = FlowRepository.new(@originator_id).current_version
     current_version.step_versions
   end
 
@@ -41,10 +35,10 @@ class Flow
   #  FlowRepository.new.add(self)
   #end
 
-  def save
-    FlowRepository.new(@originator_id).add(self)
+  #def save
+  #  FlowRepository.new(@originator_id).add(self)
     #FlowVersion.store(self)
-  end
+  #end
 
 
   def attributes
@@ -57,7 +51,7 @@ class Flow
 
   def update_state(state)
     state = state
-    save
+    FlowRepository.new(@originator_id).add(self)
   end
 
 

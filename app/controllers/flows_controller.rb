@@ -1,7 +1,7 @@
 class FlowsController < ApplicationController
 
   def index
-    @flows = FlowRepository.all
+    @flows = FlowRepository.current_flows
   end
 
   def new
@@ -9,21 +9,20 @@ class FlowsController < ApplicationController
   end
 
   def create
-    # STORE NEW STEP
-
-    ### This API has to be updated !!!!!  Use the Repository instead
-    Flow.new(name: params[:name], color: params[:color], size: params[:size], step_version_ids: params[:step_version_ids]).save
+    flow = Flow.new(name: params[:name], color: params[:color], size: params[:size], step_version_ids: params[:step_version_ids])
+    FlowRepository.add(flow)
 
     redirect_to flows_path
   end
 
   def edit
-    @flow = Flow.find(params[:id])
+    @flow = FlowRepository.current(params[:id])
     @step_versions = StepVersion.current
   end
 
   def update
-    Flow.new(originator_id: params[:originator_id], name: params[:name], color: params[:color], size: params[:size], step_version_ids: params[:step_version_ids]).save
+    flow = Flow.new(originator_id: params[:originator_id], name: params[:name], color: params[:color], size: params[:size], step_version_ids: params[:step_version_ids])
+    FlowRepository.add(flow)
 
     redirect_to flows_path
   end
