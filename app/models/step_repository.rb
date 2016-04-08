@@ -7,8 +7,11 @@ class StepRepository
   end
 
   def initialize(originator_id)
-    @versions = StepVersion.all.where(originator_id: originator_id).order(:created_at).to_a
-    @version_number = @versions.count
+    @versions = StepVersion.all
+                .where(originator_id: originator_id)
+                .order(:created_at)
+                .to_a.map.with_index(1) { |version, number| [number, version] }.to_h
+  #  @version_number = @versions.count
   end
 
   def add(version)
