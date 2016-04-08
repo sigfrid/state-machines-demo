@@ -2,90 +2,61 @@
 # t.string :color
 # t.integer :size
 
-class Flow
-  attr_accessor :name, :color, :size, :state
+class Flow < ApplicationRecord
+  attr_accessor :step_ids
 
-# CREATED_AT IS WRONG
-  def initialize(originator_id: (0...50).map { ('a'..'z').to_a[rand(26)] }.join, name:, color: nil, size:, created_at: nil, state: 'created', step_version_ids: nil)
-    @originator_id = originator_id
-    @name = name
-    @color = color
-    @size = size
-    @state = state
-    @step_version_ids = step_version_ids
+  def steps
+    ids = latest_version.step_versions.map {|v| v.step_id}
+    Step.where(id: ids)
   end
 
-  def id
-    @originator_id
-  end
-
-
-  def current_steps
-    current_version = FlowRepository.new(@originator_id).current_version
-    current_version.current_step_versions.map {|v| Step.new(v.attributes.symbolize_keys.except!(:id))}
-  end
-
-  def step_versions
-    current_version = FlowRepository.new(@originator_id).current_version
-    current_version.step_versions
-  end
-
-  #def self.create
-  #  #FlowVersion.store(self)
-  #  FlowRepository.new.add(self)
-  #end
-
-  #def save
-  #  FlowRepository.new(@originator_id).add(self)
-    #FlowVersion.store(self)
+  #def step_versions
+  #  current_version = FlowRepository.new(@originator_id).current_version
+  #  current_version.step_versions
   #end
 
 
-  def attributes
-    instance_variables.each_with_object(Hash.new) do |ivar, attrs|
-      attrs[ivar.to_s.gsub(/^@/, '').to_sym] = instance_variable_get(ivar)
+def latest_version
+  FlowVersion.where(flow_id: id).last(1).first
+end
+
+#def attributes
+#  x = super
+#  x.except!("id", "created_at", "updated_at")
+#end
+
+def versionable_attributes
+  attributes.except!("id", "created_at", "updated_at").merge({"flow_id": id})
+end
+
+  def event
+    state_machine = FlowStateMachine.new
+    state_machine.target(self)
+    state_machine
+  end
+end
+
+
+class FlowStateMachine < FiniteMachine::Definition
+  initial :created
+
+  alias_target :step
+
+  events {
+    event :approve, :created => :approved
+    event :implement, :approved => :implemented
+    event :verify, :implemented => :verified
+  }
+
+  callbacks {
+    on_transition do |event|
+      step.state = event.to.to_s
     end
-  end
+  }
 
-
-
-  def update_state(state)
-    state = state
-    FlowRepository.new(@originator_id).add(self)
-  end
-
-
-
-# STATE MACHINE
-
-def event
-    flow = self
-    FiniteMachine.define do
-      target flow
-
-  ###    initial :created
-      restore!(target.state.to_sym)
-
-
-      events {
-        event :approve, :created => :approved
-        event :implement, :approved => :implemented
-        event :verify, :implemented => :verified
-      #  event :back,  [:neutral, :one] => :reverse
-      }
-
-      callbacks {
-        on_transition do |event|
-          target.update_state(event.to.to_s)
-          #puts "shifted from #{event.from} to #{event.to}"
-        end
-      }
+  handlers {
+    handle FiniteMachine::InvalidStateError do |exception|
+      p "INVALID !!!! #{exception}"
     end
-  end
-
-
-
-
-
-
+  }
 end

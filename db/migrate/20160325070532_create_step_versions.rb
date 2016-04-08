@@ -1,7 +1,7 @@
 class CreateStepVersions < ActiveRecord::Migration[5.0]
   def change
     create_table :step_versions do |t|
-      t.string :originator_id
+      t.string :step_id
       t.string :name
       t.integer :position
 

@@ -8,7 +8,7 @@
     <h3><%= flow.name %></h3>
     <p><%= flow.id %></p>
     <ul>
-      <% flow.current_steps.each do |step| %>
+      <% flow.steps.each do |step| %>
       <li><%= step.name %><%= step.position %></li>
       <% end %>
     </ul>

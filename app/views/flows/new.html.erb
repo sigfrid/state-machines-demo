@@ -1,12 +1,12 @@
 <h1>New Flow</h1>
 
-<%= form_tag flows_path, method: :post do %>
+<%= form_for @flow, html: {class: ""} do |f| %>
 
-  <p><%= text_field_tag :name, nil, placeholder: "Name" %></p>
-  <p><%= text_field_tag :color, nil, placeholder: "Color" %></p>
-  <p><%= text_field_tag :size, nil, placeholder: "size" %></p>
+  <p><%= f.text_field :name, placeholder: "Name" %></p>
+  <p><%= f.text_field :color, placeholder: "Color" %></p>
+  <p><%= f.text_field :size, placeholder: "size" %></p>
 
-  <p><%= select_tag :step_version_ids, options_from_collection_for_select(@step_versions, :id, :name), multiple: true %></p>
+  <p><%= f.select :step_ids, options_from_collection_for_select(Step.all, :id, :name), {}, {multiple: true}  %></p>
 
-  <%= submit_tag %>
+  <%= f.submit 'Submit' %>
 <% end %>
