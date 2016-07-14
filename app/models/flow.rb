@@ -3,31 +3,40 @@
 # t.integer :size
 
 class Flow
-  attr_accessor :name, :color, :size, :state
+  include ActiveModel::Model
 
-# CREATED_AT IS WRONG
-  def initialize(originator_id: (0...50).map { ('a'..'z').to_a[rand(26)] }.join, name:, color: nil, size:, created_at: nil, state: 'created', step_version_ids: nil)
-    @originator_id = originator_id
-    @name = name
-    @color = color
-    @size = size
-    @state = state
-    @step_version_ids = step_version_ids
-  end
+  attr_accessor :name, :color, :size, :state, :created_at
+  attr_writer :originator_id  # :step_version_ids
+
+
+
+  #def defaults
+   # @id = SecureRandom.uuid
+   # @state =  'created'
+  #end
 
   def id
     @originator_id
   end
 
+  #def created_at
+   # Time.now
+  #end
+
+
+
+
 
   def current_steps
-    current_version = FlowRepository.new(@originator_id).current_version
-    current_version.current_step_versions.map {|v| Step.new(v.attributes.symbolize_keys.except!(:id))}
+    []
+    ##flow = FlowRepository.new(id).current
+    ##flow.step_versions.map {|v| Step.new(v.attributes.symbolize_keys.except!(:id))}
   end
 
   def step_versions
-    current_version = FlowRepository.new(@originator_id).current_version
-    current_version.step_versions
+    []
+    ##flow = FlowRepository.new(id).current
+    ##flow.step_versions
   end
 
   #def self.create
@@ -49,10 +58,10 @@ class Flow
 
 
 
-  def update_state(state)
-    state = state
-    FlowRepository.new(@originator_id).add(self)
-  end
+  #def update_state(state)
+   # state = state
+   # FlowRepository.new(id).add(self)
+  #end
 
 
 

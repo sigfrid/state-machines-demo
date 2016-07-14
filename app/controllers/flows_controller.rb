@@ -9,7 +9,10 @@ class FlowsController < ApplicationController
   end
 
   def create
-    flow = Flow.new(name: params[:name], color: params[:color], size: params[:size], step_version_ids: params[:step_version_ids])
+
+    # USE CASE
+
+    flow = Flow.new(flow_params.merge({'state': 'created', 'originator_id': SecureRandom.uuid}))
     FlowRepository.add(flow)
 
     redirect_to flows_path
@@ -25,5 +28,12 @@ class FlowsController < ApplicationController
     FlowRepository.add(flow)
 
     redirect_to flows_path
+  end
+
+
+  private
+
+  def flow_params
+    params.permit(:name, :color, :size)
   end
 end

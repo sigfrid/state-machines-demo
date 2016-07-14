@@ -4,14 +4,10 @@
 class Step
   attr_accessor :name, :position, :state
 
-  def self.find(id)
-    xattributes = StepRepository.new(id).last_version.attributes.symbolize_keys.except!(:id)
-    Step.new(xattributes)
-  end
 
 
 # CREATED_AT IS WRONG
-  def initialize(originator_id: (0...50).map { ('a'..'z').to_a[rand(26)] }.join, name:, position:, created_at: nil, state: 'created', flow_version_ids: nil)
+  def initialize(originator_id: SecureRandom.uuid, name:, position:, state: 'created', flow_version_ids: nil)
     @originator_id = originator_id
     @name = name
     @position = position

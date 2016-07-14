@@ -26,9 +26,9 @@ class FlowRepository
     FlowVersion.store(version)
   end
 
-  def self.current(originator_id)
-    current_version = FlowVersion.all.where(originator_id: originator_id).order(created_at: :desc).take(1)
-    Flow.new(coerced_attributes(current_version))
+  def current
+ #   current_version = FlowVersion.all.where(originator_id: originator_id).order(created_at: :desc).take(1)
+    Flow.new(coerced_attributes(@versions.last))
   end
 
   def self.history_for(originator_id)
